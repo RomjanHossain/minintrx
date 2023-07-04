@@ -85,6 +85,9 @@ DATABASES = {
         "PASSWORD": env("dbpass"),
         "HOST": env("dbhost"),
         "PORT": env("dbport"),
+        "OPTIONS": {
+            "autocommit": True,
+        },
     }
 }
 
