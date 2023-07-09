@@ -3,11 +3,18 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 from .views import (
     ChangePasswordView,
+    EarnHistoryAPIView,
     ImageUploadView,
     LogoutAPIView,
+    PackageAPIView,
+    PackagePurchaseAPIView,
     ProfileAPIView,
+    QuizAPIView,
     RegisterAPIView,
+    ScratchCardAPIView,
+    SpinWheelAPIView,
     UpdateProfileAPIView,
+    ViewWebsitesAPIView,
     image_detail,
 )
 
@@ -33,5 +40,20 @@ urlpatterns = [
     path("upload-images/", ImageUploadView.as_view(), name="image_upload"),
     # get images
     path("get-images/", image_detail, name="image_detail"),
-    #
+    # quiz views
+    path("quiz/", QuizAPIView.as_view(), name="quiz"),
+    # spin views
+    path("spin/", SpinWheelAPIView.as_view(), name="spin"),
+    # website views
+    path("website/", ViewWebsitesAPIView.as_view(), name="website"),
+    # scratch views
+    path("scratch/", ScratchCardAPIView.as_view(), name="scratch"),
+    # package views
+    path("package/", PackageAPIView.as_view(), name="package"),
+    # earn views
+    path("earn/", EarnHistoryAPIView.as_view(), name="earn"),
+    # package purchase views
+    path(
+        "package-purchase/", PackagePurchaseAPIView.as_view(), name="package-purchase"
+    ),
 ]
