@@ -43,6 +43,7 @@ class NewUserSerializer(ModelSerializer):
             raise serializers.ValidationError("Password too short")
         if NewUser.objects.filter(username=data["username"]).exists():
             raise serializers.ValidationError("Username already exists")
+
         return data
 
     class Meta:
@@ -63,6 +64,8 @@ class NewUserSerializer(ModelSerializer):
             "last_name": {"required": True},
             "phone": {"required": True},
             "email": {"required": True},
+            "country": {"required": True},
+            "refferal": {"required": True},
         }
 
 
