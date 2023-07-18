@@ -10,6 +10,8 @@ from .views import (
     PackagePurchaseAPIView,
     ProfileAPIView,
     QuizAPIView,
+    RefferealCodeAPIView,
+    RefferedUsersAPIView,
     RegisterAPIView,
     ScratchCardAPIView,
     SpinWheelAPIView,
@@ -56,4 +58,6 @@ urlpatterns = [
     path(
         "package-purchase/", PackagePurchaseAPIView.as_view(), name="package-purchase"
     ),
+    path("reffered/", RefferealCodeAPIView.as_view(), name="reffered"),
+    path("reffered-users/", RefferedUsersAPIView.as_view(), name="reffered-users"),
 ]

@@ -6,6 +6,7 @@ from api.serializations import (
     PackagePurchaseSerializer,
     PackageSerializer,
     QuizSerializer,
+    ReffereSerializer,
     ScratchCardSerializer,
     SpinSerializer,
     UpdateUserSerializer,
@@ -19,6 +20,7 @@ from landing.models import (
     PackageModel,
     PackagePurchase,
     Quiz,
+    RefferedModel,
     ScratchCard,
     Spin,
     VisitWebsites,
@@ -305,3 +307,25 @@ class PackagePurchaseAPIView(ListAPIView):
     # queryset = PackagePurchase.objects.all()
     def get_queryset(self):
         return PackagePurchase.objects.filter(user=self.request.user)
+
+
+# refferal code view
+class RefferealCodeAPIView(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ReffereSerializer
+
+    # queryset = PackagePurchase.objects.all()
+    def get_queryset(self):
+        return RefferedModel.objects.filter(user=self.request.user)
+
+
+# get 10 reffered users sort by ammount (api view only)
+class RefferedUsersAPIView(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ReffereSerializer
+
+    # queryset = PackagePurchase.objects.all()
+    def get_queryset(self):
+        return RefferedModel.objects.filter(user=self.request.user).order_by("-amount")[
+            :10
+        ]
