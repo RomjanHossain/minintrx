@@ -8,6 +8,7 @@ from .models import (
     PackageModel,
     PackagePurchase,
     Quiz,
+    RefferedModel,
     ScratchCard,
     Spin,
     VisitWebsites,
@@ -52,7 +53,20 @@ class UserAdminConfig(UserAdmin):
                 )
             },
         ),
-        ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser")}),
+        # ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser")}),
+        (
+            "Permissions",
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "groups",
+                    "user_permissions",
+                )
+            },
+        ),
+        ("Important dates", {"fields": ("last_login", "date_joined")}),
         (
             "Personal",
             {
@@ -66,8 +80,8 @@ class UserAdminConfig(UserAdmin):
                 )
             },
         ),
+        # ("Referral", {"fields": ("reffer_code",)}),
     )
-
     add_fieldsets = (
         (
             None,
@@ -169,6 +183,28 @@ class PackagePurchaseAdmin(admin.ModelAdmin):
     list_per_page = 10
     search_fields = ("user", "package", "amount")
     # editable = ("user", "package", "date")
+
+
+@admin.register(RefferedModel)
+class RefferedModelAdmin(admin.ModelAdmin):
+    list_display = (
+        # "user",
+        "reffered_by",
+        "reffered_to",
+        "amount",
+        "date",
+    )
+    list_per_page = 10
+    search_fields = (
+        "reffered_by__username",
+        "reffer_code",
+        "reffered_to__username",
+    )
+
+    def display_reffered_users(self, obj):
+        return ", ".join([user.username for user in obj.reffered_user.all()])
+
+    display_reffered_users.short_description = "Referred Users"
 
 
 admin.site.register(NewUser, UserAdminConfig)
