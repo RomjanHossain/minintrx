@@ -6,6 +6,7 @@ from landing.models import (
     PackageModel,
     PackagePurchase,
     Quiz,
+    RefferedModel,
     ScratchCard,
     Spin,
     VisitWebsites,
@@ -165,4 +166,11 @@ class EarnedHistorySerializer(serializers.ModelSerializer):
 class PackagePurchaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = PackagePurchase
+        fields = "__all__"
+
+
+# reffered serializer
+class ReffereSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RefferedModel
         fields = "__all__"
