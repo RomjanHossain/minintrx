@@ -3,6 +3,7 @@ from landing.models import (
     EarnedHistory,
     ImageModel,
     NewUser,
+    Notification,
     PackageModel,
     PackagePurchase,
     Quiz,
@@ -173,4 +174,11 @@ class PackagePurchaseSerializer(serializers.ModelSerializer):
 class ReffereSerializer(serializers.ModelSerializer):
     class Meta:
         model = RefferedModel
+        fields = "__all__"
+
+
+# notification serializer
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
         fields = "__all__"

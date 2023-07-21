@@ -160,3 +160,39 @@ class PackagePurchase(models.Model):
 
     class Meta:
         verbose_name_plural = "Package Purchase"
+
+# reffer code where each reffer the user will get some amount
+class RefferedModel(models.Model):
+    id = models.AutoField(primary_key=True)
+    # user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
+    reffer_code = models.CharField(max_length=1000)
+    # reffered_user = models.ManyToManyField(NewUser, related_name="reffered_user")
+    reffered_by = models.ForeignKey(
+        NewUser, related_name="reffered_by", on_delete=models.CASCADE
+    )
+    reffered_to = models.ForeignKey(
+        NewUser, related_name="reffered_to", on_delete=models.CASCADE
+    )
+    amount = models.FloatField(default=0.0)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.reffered_by.username
+
+    class Meta:
+        verbose_name_plural = "Reffered Code"
+
+
+class Notification(models.Model):
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=1000)
+    description = models.CharField(max_length=1000)
+    date = models.DateTimeField(auto_now_add=True)
+    path = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name_plural = "Notification"
+
