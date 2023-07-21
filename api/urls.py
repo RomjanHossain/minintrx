@@ -6,6 +6,7 @@ from .views import (
     EarnHistoryAPIView,
     ImageUploadView,
     LogoutAPIView,
+    NotificationAPIView,
     PackageAPIView,
     PackagePurchaseAPIView,
     ProfileAPIView,
@@ -60,4 +61,5 @@ urlpatterns = [
     ),
     path("reffered/", RefferealCodeAPIView.as_view(), name="reffered"),
     path("reffered-users/", RefferedUsersAPIView.as_view(), name="reffered-users"),
+    path("notification/", NotificationAPIView.as_view(), name="notification"),
 ]
