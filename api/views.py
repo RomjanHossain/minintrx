@@ -3,6 +3,7 @@ from api.serializations import (
     EarnedHistorySerializer,
     ImageSerializer,
     NewUserSerializer,
+    NotificationSerializer,
     PackagePurchaseSerializer,
     PackageSerializer,
     QuizSerializer,
@@ -17,6 +18,7 @@ from landing.models import (
     EarnedHistory,
     ImageModel,
     NewUser,
+    Notification,
     PackageModel,
     PackagePurchase,
     Quiz,
@@ -329,3 +331,14 @@ class RefferedUsersAPIView(ListAPIView):
         return RefferedModel.objects.filter(user=self.request.user).order_by("-amount")[
             :10
         ]
+
+
+class NotificationAPIView(ListAPIView):
+    # permission_classes = (IsAuthenticated,)
+    serializer_class = NotificationSerializer
+
+    # def get_queryset(self):
+    #     return Notification.objects.filter(user=self.request.user)
+    # get the last notifications
+    def get_queryset(self):
+        return Notification.objects.all().order_by("-id")[-1]
