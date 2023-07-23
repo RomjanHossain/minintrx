@@ -18,6 +18,8 @@ from .views import (
     SpinWheelAPIView,
     UpdateProfileAPIView,
     ViewWebsitesAPIView,
+    changeBalance,
+    checkReffer,
     image_detail,
 )
 
@@ -30,6 +32,10 @@ urlpatterns = [
     path("profile/", ProfileAPIView.as_view(), name="profile"),
     # update profile
     path("update/<pk>/", UpdateProfileAPIView.as_view(), name="update"),
+    # chagne balance
+    path("change_balance/", changeBalance, name="change_balance"),
+    # check reffer
+    path("check-reffer/", checkReffer, name="check-reffer"),
     # logout
     path("logout/", LogoutAPIView.as_view(), name="logout"),
     # change password
