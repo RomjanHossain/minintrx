@@ -71,11 +71,30 @@ class NewUserSerializer(ModelSerializer):
         }
 
 
+# change balance serializer
+class ChangeBalanceSerializer(ModelSerializer):
+    def update(self, instance, validated_data):
+        instance.balance = instance.balance + validated_data.get("balance", 0)
+        instance.save()
+        return instance
+
+    class Meta:
+        model = NewUser
+        fields = ("balance",)
+
+
 # Update user serializer
 class UpdateUserSerializer(ModelSerializer):
     class Meta:
         model = NewUser
-        fields = ("email", "first_name", "last_name", "phone", "username", "password")
+        fields = (
+            "email",
+            "first_name",
+            "last_name",
+            "phone",
+            "username",
+            "password",
+        )
 
     def update(self, instance, validated_data):
         instance.email = validated_data.get("email", instance.email)
@@ -83,6 +102,8 @@ class UpdateUserSerializer(ModelSerializer):
         instance.last_name = validated_data.get("last_name", instance.last_name)
         instance.phone = validated_data.get("phone", instance.phone)
         instance.username = validated_data.get("username", instance.username)
+        # add the new balance to the old balance
+        instance.balance = instance.balance + validated_data.get("balance", 0)
         instance.save()
         return instance
 
@@ -111,6 +132,49 @@ class ChangePasswordSerializer(ModelSerializer):
     class Meta:
         model = NewUser
         fields = ("old_password", "new_password")
+
+
+# check reffer serializer
+class CheckRefferSerializer(ModelSerializer):
+    # check if the refferal code exists then if it exists then check how many RefferedModel objects are there with the same refferal code
+    # add the balance to the user multiplied by the number of RefferedModel objects
+    def update(self, instance, validated_data):
+        # get the refferal code
+        refferal = validated_data.get("refferal", None)
+        # get the user
+        user = instance
+        # check if the refferal code exists
+        if NewUser.objects.filter(reffer_code=refferal).exists():
+            # get the user with the refferal code
+            reffered_by = NewUser.objects.get(reffer_code=refferal)
+            # get the number of RefferedModel objects with the same refferal code
+            reffered_model = RefferedModel.objects.filter(reffer_code=refferal)
+            # get the number of RefferedModel objects
+            reffered_model_count = reffered_model.count()
+            # get the amount
+            amount = reffered_model_count * 0.5
+            # add the balance to the user
+            reffered_by.balance += amount
+            # save the user
+            reffered_by.save()
+            # add the balance to the user
+            user.balance += 5
+            # save the user
+            user.save()
+            # create the RefferedModel object
+            reffered_model = RefferedModel.objects.create(
+                reffered_by=reffered_by,
+                reffered_to=user,
+                amount=amount,
+                reffer_code=refferal,
+            )
+            # save the RefferedModel object
+            reffered_model.save()
+        return instance
+
+    class Meta:
+        model = NewUser
+        fields = ("refferal",)
 
 
 # image serializer

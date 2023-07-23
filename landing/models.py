@@ -21,53 +21,27 @@ class NewUser(AbstractUser):
     # def save(self, *args, **kwargs):
     #     if not self.reffer_code:  # Check if referral code is not already set
     #         self.reffer_code = self.generate_referral_code()
+    #     if self.refferal:
+    #         reffered_by = NewUser.objects.get(reffer_code=self.refferal)
+    #         reffered_by.balance += 10
+    #         reffered_by.save()
 
-    #     with transaction.atomic():
-    #         # Save the NewUser instance first
-    #         super().save(*args, **kwargs)
+    #         # Update this user balance
+    #         self.balance += 5
+    #         super(NewUser, self).save(*args, **kwargs)  # Save the instance first
 
-    #         if self.refferal:
-    #             print("the refferal id ->", self.refferal)
-    #             reffered_by = NewUser.objects.get(reffer_code=self.refferal)
-
-    #             # Update the referrer's balance
-    #             reffered_by.balance += 10
-    #             reffered_by.save()
-
-    #             # Create and save the RefferedModel instance
-    #             RefferedModel.objects.create(
-    #                 reffered_by=reffered_by, reffered_to=self, amount=0.5
-    #             )
-
-    #             # Update the current user's balance
-    #             self.balance += 5
-    #             self.save()
-
-    def save(self, *args, **kwargs):
-        if not self.reffer_code:  # Check if referral code is not already set
-            self.reffer_code = self.generate_referral_code()
-        if self.refferal:
-            print("this is referred code -> ", self.refferal)
-            reffered_by = NewUser.objects.get(reffer_code=self.refferal)
-            reffered_by.balance += 10
-            reffered_by.save()
-
-            # Update this user balance
-            self.balance += 5
-            super(NewUser, self).save(*args, **kwargs)  # Save the instance first
-
-            # Now add this to the referred model after the instance has been saved
-            rm = RefferedModel.objects.create(
-                reffered_by=reffered_by,
-                reffered_to=self,
-                amount=0.5,
-                reffer_code=self.reffer_code,
-            )
-            rm.save()
-        else:
-            super(NewUser, self).save(
-                *args, **kwargs
-            )  # Save the instance without changes
+    #         # Now add this to the referred model after the instance has been saved
+    #         rm = RefferedModel.objects.create(
+    #             reffered_by=reffered_by,
+    #             reffered_to=self,
+    #             amount=0.5,
+    #             reffer_code=self.reffer_code,
+    #         )
+    #         rm.save()
+    #     else:
+    #         super(NewUser, self).save(
+    #             *args, **kwargs
+    #         )  # Save the instance without changes
 
     def __str__(self):
         return self.username

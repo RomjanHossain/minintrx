@@ -1,5 +1,7 @@
 from api.serializations import (
+    ChangeBalanceSerializer,
     ChangePasswordSerializer,
+    CheckRefferSerializer,
     EarnedHistorySerializer,
     ImageSerializer,
     NewUserSerializer,
@@ -154,6 +156,34 @@ def image_detail(request):
 
     if request.method == "GET":
         serializer = ImageSerializer(_image, many=True)
+        return Response(serializer.data, status=HTTP_200_OK)
+
+
+# change balance
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def changeBalance(request):
+    try:
+        _user = NewUser.objects.get(pk=request.user.id)
+    except NewUser.DoesNotExist:
+        return Response(status=HTTP_404_NOT_FOUND)
+
+    if request.method == "PUT":
+        serializer = ChangeBalanceSerializer(_user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_200_OK)
+
+
+@api_view(["GET"])
+def checkReffer(request):
+    try:
+        _user = NewUser.objects.get(pk=request.user.id)
+    except NewUser.DoesNotExist:
+        return Response(status=HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        serializer = CheckRefferSerializer(_user)
         return Response(serializer.data, status=HTTP_200_OK)
 
 
