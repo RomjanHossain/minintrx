@@ -157,8 +157,8 @@ class CheckRefferSerializer(ModelSerializer):
             reffered_by.balance += amount
             # save the user
             reffered_by.save()
-            # add the balance to the user
-            user.balance += 5
+            # add 10% of the users current balance
+            user.balance += user.balance * 0.1
             # save the user
             user.save()
             # create the RefferedModel object
