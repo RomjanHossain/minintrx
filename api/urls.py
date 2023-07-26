@@ -34,7 +34,7 @@ urlpatterns = [
     path("update/<pk>/", UpdateProfileAPIView.as_view(), name="update"),
     # chagne balance
     path("change_balance/", changeBalance, name="change_balance"),
-    # check reffer
+    # check reffer code if exists then adding 10% of the users current balance
     path("check-reffer/", checkReffer, name="check-reffer"),
     # logout
     path("logout/", LogoutAPIView.as_view(), name="logout"),
@@ -57,15 +57,16 @@ urlpatterns = [
     path("website/", ViewWebsitesAPIView.as_view(), name="website"),
     # scratch views
     path("scratch/", ScratchCardAPIView.as_view(), name="scratch"),
-    # package views
+    # view all packages
     path("package/", PackageAPIView.as_view(), name="package"),
-    # earn views
+    # how and when the user earned
     path("earn/", EarnHistoryAPIView.as_view(), name="earn"),
     # package purchase views
     path(
         "package-purchase/", PackagePurchaseAPIView.as_view(), name="package-purchase"
     ),
     path("reffered/", RefferealCodeAPIView.as_view(), name="reffered"),
+    # last 10 reffered users sort by ammount
     path("reffered-users/", RefferedUsersAPIView.as_view(), name="reffered-users"),
     path("notification/", NotificationAPIView.as_view(), name="notification"),
 ]
