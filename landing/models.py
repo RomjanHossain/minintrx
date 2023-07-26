@@ -12,36 +12,12 @@ class NewUser(AbstractUser):
     balance = models.FloatField(default=0.0)
     # reffer_code = models.UUIDField(default=uuid.uuid4, editable=False)
     reffer_code = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    mining_speed = models.FloatField(default=0.0)
 
     def generate_referral_code(self):
         return str(uuid.uuid4()).replace("-", "")[
             :10
         ]  # Generate a 10-character referral code
-
-    # def save(self, *args, **kwargs):
-    #     if not self.reffer_code:  # Check if referral code is not already set
-    #         self.reffer_code = self.generate_referral_code()
-    #     if self.refferal:
-    #         reffered_by = NewUser.objects.get(reffer_code=self.refferal)
-    #         reffered_by.balance += 10
-    #         reffered_by.save()
-
-    #         # Update this user balance
-    #         self.balance += 5
-    #         super(NewUser, self).save(*args, **kwargs)  # Save the instance first
-
-    #         # Now add this to the referred model after the instance has been saved
-    #         rm = RefferedModel.objects.create(
-    #             reffered_by=reffered_by,
-    #             reffered_to=self,
-    #             amount=0.5,
-    #             reffer_code=self.reffer_code,
-    #         )
-    #         rm.save()
-    #     else:
-    #         super(NewUser, self).save(
-    #             *args, **kwargs
-    #         )  # Save the instance without changes
 
     def __str__(self):
         return self.username
