@@ -168,7 +168,6 @@ class PackagePurchase(models.Model):
     class Meta:
         verbose_name_plural = "Package Purchase"
 
-
 # reffer code where each reffer the user will get some amount
 class RefferedModel(models.Model):
     id = models.AutoField(primary_key=True)

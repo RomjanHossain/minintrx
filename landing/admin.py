@@ -8,7 +8,6 @@ from .models import (
     PackageModel,
     PackagePurchase,
     Quiz,
-    RefferedModel,
     ScratchCard,
     Spin,
     VisitWebsites,
@@ -54,20 +53,7 @@ class UserAdminConfig(UserAdmin):
                 )
             },
         ),
-        # ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser")}),
-        (
-            "Permissions",
-            {
-                "fields": (
-                    "is_active",
-                    "is_staff",
-                    "is_superuser",
-                    "groups",
-                    "user_permissions",
-                )
-            },
-        ),
-        ("Important dates", {"fields": ("last_login", "date_joined")}),
+        ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser")}),
         (
             "Personal",
             {
@@ -81,8 +67,8 @@ class UserAdminConfig(UserAdmin):
                 )
             },
         ),
-        # ("Referral", {"fields": ("reffer_code",)}),
     )
+
     add_fieldsets = (
         (
             None,
