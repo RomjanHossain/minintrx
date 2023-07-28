@@ -120,7 +120,7 @@ class PackageModel(models.Model):
     name = models.CharField(max_length=1000)
     price = models.FloatField(default=0.0)
     mining_speed = models.FloatField(default=0.0)
-    validity = models.IntegerField(default=7)
+    # validity = models.IntegerField(default=7)
 
     def __str__(self):
         return self.name
