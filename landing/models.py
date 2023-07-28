@@ -159,6 +159,8 @@ class PackagePurchase(models.Model):
     user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
     package = models.ForeignKey(PackageModel, on_delete=models.CASCADE)
     amount = models.FloatField(default=0.0)
+    phone = models.CharField(max_length=1000)
+    transaction_id = models.CharField(max_length=1000)
     date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=100, choices=STATUS_CHOICE, default="Pending")
 
