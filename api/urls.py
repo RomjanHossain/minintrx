@@ -18,6 +18,8 @@ from .views import (
     SpinWheelAPIView,
     UpdateProfileAPIView,
     ViewWebsitesAPIView,
+    WithdrawRequestApiView,
+    WithdrowHistoryApiView,
     changeBalance,
     checkReffer,
     image_detail,
@@ -69,4 +71,11 @@ urlpatterns = [
     # last 10 reffered users sort by ammount
     path("reffered-users/", RefferedUsersAPIView.as_view(), name="reffered-users"),
     path("notification/", NotificationAPIView.as_view(), name="notification"),
+    # withdraw api
+    path("withdraw/", WithdrawRequestApiView.as_view(), name="withdraw"),
+    # withdraw history api
+    # WithdrowHistoryApiView
+    path(
+        "withdraw-history/", WithdrowHistoryApiView.as_view(), name="withdraw-history"
+    ),
 ]

@@ -14,6 +14,7 @@ from api.serializations import (
     SpinSerializer,
     UpdateUserSerializer,
     VisitWebsitesSerializer,
+    WithdrowReqeustSerializer,
 )
 from django.contrib.auth import update_session_auth_hash
 from landing.models import (
@@ -28,6 +29,7 @@ from landing.models import (
     ScratchCard,
     Spin,
     VisitWebsites,
+    WithdrowRequest,
 )
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -372,3 +374,53 @@ class NotificationAPIView(ListAPIView):
     # get the last notifications
     def get_queryset(self):
         return Notification.objects.all().order_by("-id")[-1]
+
+
+# class WithdrawRequestApiView(ListAPIView):
+#     serializer_class = WithdrowReqeustSerializer
+#     model = WithdrowRequest
+#     permission_classes = [IsAuthenticated]
+
+#     def post(self, request, *args, **kwargs):
+#         # print(request.data)
+#         request.data._mutable = True
+#         user_id = request.user.id
+#         request.data["user"] = user_id
+
+#         serializer = self.get_serializer(data=request.data)
+#         # now add the user to the serializer
+#         if serializer.is_valid():
+#             print("serializer is valid")
+#             serializer.save()
+#             return Response(serializer.data, status=HTTP_201_CREATED)
+#         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+#     def get_queryset(self):
+#         return WithdrowRequest.objects.filter(user=self.request.user)
+class WithdrawRequestApiView(CreateAPIView):
+    serializer_class = WithdrowReqeustSerializer
+    model = WithdrowRequest
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        request.data._mutable = True
+        user_id = request.user.id
+        request.data["user"] = user_id
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+class WithdrowHistoryApiView(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = WithdrowReqeustSerializer
+    model = WithdrowRequest
+
+    def get_queryset(self):
+        return WithdrowRequest.objects.filter(user=self.request.user)
+
+    def get(self, request, *args, **kwargs):
+        return Response(self.get_queryset().values())

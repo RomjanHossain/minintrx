@@ -11,6 +11,7 @@ from .models import (
     ScratchCard,
     Spin,
     VisitWebsites,
+    WithdrowRequest,
 )
 
 # Register your models here.
@@ -169,6 +170,42 @@ class PackagePurchaseAdmin(admin.ModelAdmin):
     list_per_page = 10
     search_fields = ("user", "package", "amount")
     # editable = ("user", "package", "date")
+
+
+# withdrow request admin
+@admin.register(WithdrowRequest)
+class WithdrowRequestAdmin(admin.ModelAdmin):
+    list_display = (
+        "user",
+        "amount",
+        "date",
+        "status",
+    )
+    list_per_page = 10
+    search_fields = ("user", "amount", "status")
+    # editable = ("user", "package", "date")
+
+
+@admin.register(RefferedModel)
+class RefferedModelAdmin(admin.ModelAdmin):
+    list_display = (
+        # "user",
+        "reffered_by",
+        "reffered_to",
+        "amount",
+        "date",
+    )
+    list_per_page = 10
+    search_fields = (
+        "reffered_by__username",
+        "reffer_code",
+        "reffered_to__username",
+    )
+
+    def display_reffered_users(self, obj):
+        return ", ".join([user.username for user in obj.reffered_user.all()])
+
+    display_reffered_users.short_description = "Referred Users"
 
 
 admin.site.register(NewUser, UserAdminConfig)

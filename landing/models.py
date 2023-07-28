@@ -203,3 +203,20 @@ class Notification(models.Model):
     class Meta:
         verbose_name_plural = "Notification"
 
+
+# withdrow request
+class WithdrowRequest(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(NewUser, on_delete=models.CASCADE, blank=True, null=True)
+    amount = models.FloatField(default=0.0)
+    phone = models.CharField(max_length=1000)
+    address = models.CharField(max_length=1000)
+    method = models.CharField(max_length=1000)
+    date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=100, choices=STATUS_CHOICE, default="Pending")
+
+    # def __str__(self):
+    #     return self.user.username
+
+    class Meta:
+        verbose_name_plural = "Withdrow Request"

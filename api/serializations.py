@@ -11,6 +11,7 @@ from landing.models import (
     ScratchCard,
     Spin,
     VisitWebsites,
+    WithdrowRequest,
 )
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
@@ -245,4 +246,10 @@ class ReffereSerializer(serializers.ModelSerializer):
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
+        fields = "__all__"
+
+
+class WithdrowReqeustSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WithdrowRequest
         fields = "__all__"
