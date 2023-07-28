@@ -12,7 +12,7 @@ class NewUser(AbstractUser):
     balance = models.FloatField(default=0.0)
     # reffer_code = models.UUIDField(default=uuid.uuid4, editable=False)
     reffer_code = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    mining_speed = models.FloatField(default=0.0)
+    mining_speed = models.FloatField(default=1.0)
 
     def generate_referral_code(self):
         return str(uuid.uuid4()).replace("-", "")[
@@ -120,7 +120,7 @@ class PackageModel(models.Model):
     name = models.CharField(max_length=1000)
     price = models.FloatField(default=0.0)
     mining_speed = models.FloatField(default=0.0)
-    validity = models.IntegerField(default=7)
+    # validity = models.IntegerField(default=7)
 
     def __str__(self):
         return self.name
