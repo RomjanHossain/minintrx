@@ -12,6 +12,7 @@ from .models import (
     ScratchCard,
     Spin,
     VisitWebsites,
+    WithdrowRequest,
 )
 
 # Register your models here.
@@ -182,6 +183,20 @@ class PackagePurchaseAdmin(admin.ModelAdmin):
     list_display = ("user", "package", "amount", "date", "status")
     list_per_page = 10
     search_fields = ("user", "package", "amount")
+    # editable = ("user", "package", "date")
+
+
+# withdrow request admin
+@admin.register(WithdrowRequest)
+class WithdrowRequestAdmin(admin.ModelAdmin):
+    list_display = (
+        "user",
+        "amount",
+        "date",
+        "status",
+    )
+    list_per_page = 10
+    search_fields = ("user", "amount", "status")
     # editable = ("user", "package", "date")
 
 
