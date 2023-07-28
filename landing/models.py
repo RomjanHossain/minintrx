@@ -116,7 +116,8 @@ class ScratchCard(models.Model):
 
 # package model
 class PackageModel(models.Model):
-    id = models.AutoField(primary_key=True)
+    # id = models.AutoField(primary_key=True)
+    package_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=1000)
     price = models.FloatField(default=0.0)
     mining_speed = models.FloatField(default=0.0)
