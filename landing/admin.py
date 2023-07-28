@@ -156,11 +156,10 @@ class PackageModelAdmin(admin.ModelAdmin):
         "name",
         "price",
         "mining_speed",
-        "validity",
     )
     list_per_page = 10
     search_fields = ("package_name", "price")
-    editable = ("price", "name", "validity")
+    editable = ("price", "name")
 
 
 # package purchase admin
