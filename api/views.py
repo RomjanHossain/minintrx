@@ -376,32 +376,27 @@ class NotificationAPIView(ListAPIView):
         return Notification.objects.all().order_by("-id")[-1]
 
 
-# class WithdrawRequestApiView(ListAPIView):
-#     serializer_class = WithdrowReqeustSerializer
-#     model = WithdrowRequest
-#     permission_classes = [IsAuthenticated]
-
-#     def post(self, request, *args, **kwargs):
-#         # print(request.data)
-#         request.data._mutable = True
-#         user_id = request.user.id
-#         request.data["user"] = user_id
-
-#         serializer = self.get_serializer(data=request.data)
-#         # now add the user to the serializer
-#         if serializer.is_valid():
-#             print("serializer is valid")
-#             serializer.save()
-#             return Response(serializer.data, status=HTTP_201_CREATED)
-#         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-
-
-#     def get_queryset(self):
-#         return WithdrowRequest.objects.filter(user=self.request.user)
 class WithdrawRequestApiView(CreateAPIView):
     serializer_class = WithdrowReqeustSerializer
     model = WithdrowRequest
     permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        request.data._mutable = True
+        user_id = request.user.id
+        request.data["user"] = user_id
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+# package purchase create
+class PackagePurchaseCreateAPIView(CreateAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = PackagePurchaseSerializer
+    model = PackagePurchase
 
     def post(self, request, *args, **kwargs):
         request.data._mutable = True
