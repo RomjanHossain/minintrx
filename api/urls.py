@@ -9,6 +9,7 @@ from .views import (
     NotificationAPIView,
     PackageAPIView,
     PackagePurchaseAPIView,
+    PackagePurchaseCreateAPIView,
     ProfileAPIView,
     QuizAPIView,
     RefferealCodeAPIView,
@@ -67,6 +68,8 @@ urlpatterns = [
     path(
         "package-purchase/", PackagePurchaseAPIView.as_view(), name="package-purchase"
     ),
+    # purchase package
+    path("purchase/", PackagePurchaseCreateAPIView.as_view(), name="purchase"),
     path("reffered/", RefferealCodeAPIView.as_view(), name="reffered"),
     # last 10 reffered users sort by ammount
     path("reffered-users/", RefferedUsersAPIView.as_view(), name="reffered-users"),
