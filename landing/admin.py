@@ -77,6 +77,7 @@ class UserAdminConfig(UserAdmin):
                     "country",
                     "refferal",
                     "balance",
+                    "mining_speed",
                     # "reffer_code",
                 )
             },
@@ -179,9 +180,9 @@ class PackageModelAdmin(admin.ModelAdmin):
 # package purchase admin
 @admin.register(PackagePurchase)
 class PackagePurchaseAdmin(admin.ModelAdmin):
-    list_display = ("user", "package", "amount", "date", "status")
+    list_display = ("user", "package_id", "amount", "date", "status")
     list_per_page = 10
-    search_fields = ("user", "package", "amount")
+    search_fields = ("user", "package_id", "amount")
     # editable = ("user", "package", "date")
 
 
