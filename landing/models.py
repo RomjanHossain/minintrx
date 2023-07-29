@@ -116,8 +116,7 @@ class ScratchCard(models.Model):
 
 # package model
 class PackageModel(models.Model):
-    # id = models.AutoField(primary_key=True)
-    package_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=1000)
     price = models.FloatField(default=0.0)
     mining_speed = models.FloatField(default=0.0)
@@ -158,7 +157,7 @@ STATUS_CHOICE = [
 class PackagePurchase(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
-    package = models.ForeignKey(PackageModel, on_delete=models.CASCADE)
+    package_id = models.ForeignKey(PackageModel, on_delete=models.CASCADE)
     amount = models.FloatField(default=0.0)
     phone = models.CharField(max_length=1000)
     transaction_id = models.CharField(max_length=1000)
