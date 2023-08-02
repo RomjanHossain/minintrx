@@ -32,8 +32,18 @@ class ImageModelAdmin(admin.ModelAdmin):
 
 class UserAdminConfig(UserAdmin):
     model = NewUser
-    search_fields = ("username", "email", "phone")
-    list_filter = ("username", "email", "phone", "is_active", "is_staff")
+    search_fields = (
+        "username",
+        "email",
+        "phone",
+    )
+    list_filter = (
+        "username",
+        "email",
+        "phone",
+        "is_active",
+        "is_staff",
+    )
     # ordering = ("-start_date",)
     # list_display = (
     #     "username",
@@ -79,6 +89,9 @@ class UserAdminConfig(UserAdmin):
                     "balance",
                     "mining_speed",
                     # "reffer_code",
+                    "canWithdraw",
+                    "withdraw_start_date",
+                    "minimum_withdraw_amount",
                 )
             },
         ),
