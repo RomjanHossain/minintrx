@@ -13,6 +13,11 @@ class NewUser(AbstractUser):
     # reffer_code = models.UUIDField(default=uuid.uuid4, editable=False)
     reffer_code = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     mining_speed = models.FloatField(default=1.0)
+    canWithdraw = models.BooleanField(default=False)
+    # set withdraw start date
+    withdraw_start_date = models.DateTimeField(blank=True, null=True)
+    # minimum withdraw amount
+    minimum_withdraw_amount = models.FloatField(default=0.0)
 
     def generate_referral_code(self):
         return str(uuid.uuid4()).replace("-", "")[
@@ -212,7 +217,7 @@ class WithdrowRequest(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(NewUser, on_delete=models.CASCADE, blank=True, null=True)
     amount = models.FloatField(default=0.0)
-    phone = models.CharField(max_length=1000)
+    # phone = models.CharField(max_length=1000)
     address = models.CharField(max_length=1000)
     method = models.CharField(max_length=1000)
     date = models.DateTimeField(auto_now_add=True)
@@ -220,6 +225,31 @@ class WithdrowRequest(models.Model):
 
     # def __str__(self):
     #     return self.user.username
+    # if withdrow request is approved then the amount will be deducted from the user balance
+    # and the amount will be added to the user withdrow history
+    def save(self, *args, **kwargs):
+        if self.status == "Approved":
+            user = NewUser.objects.get(username=self.user)
+            user.balance = user.balance - self.amount
+            user.save()
+            WithdrowHistory.objects.create(
+                user=self.user, amount=self.amount, method=self.method
+            )
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = "Withdrow Request"
+
+
+class WithdrowHistory(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
+    amount = models.FloatField(default=0.0)
+    method = models.CharField(max_length=1000)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name_plural = "Withdrow History"
