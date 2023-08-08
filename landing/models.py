@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime, timedelta
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -18,6 +19,20 @@ class NewUser(AbstractUser):
     withdraw_start_date = models.DateTimeField(blank=True, null=True)
     # minimum withdraw amount
     minimum_withdraw_amount = models.FloatField(default=0.0)
+    # is reffered already
+    is_reffered = models.BooleanField(default=False)
+
+    # when saving,check if user is_reffered and the refferal code is point to a valid user, then increase the balance of the user by 10%
+    def save(self, *args, **kwargs):
+        if not self.is_reffered:
+            try:
+                user = NewUser.objects.get(reffer_code=self.refferal)
+                user.balance += 0.1 * user.balance
+                self.is_reffered = True
+                user.save()
+            except:
+                pass
+        super(NewUser, self).save(*args, **kwargs)
 
     def generate_referral_code(self):
         return str(uuid.uuid4()).replace("-", "")[
@@ -254,3 +269,42 @@ class WithdrowHistory(models.Model):
 
     class Meta:
         verbose_name_plural = "Withdrow History"
+
+
+# Withdraw status on/off
+WITHDRAW_STATUS = [
+    ("On", "On"),
+    ("Off", "Off"),
+]
+
+
+# withdraw on/off, minimum withdraw date and minimum withdraw amount
+class WithdrawSetting(models.Model):
+    id = models.AutoField(primary_key=True)
+    status = models.CharField(max_length=100, choices=WITHDRAW_STATUS, default="Off")
+    minimum_withdraw_amount = models.FloatField(default=0.0)
+    # minimum_withdraw_date = models.IntegerField(default=7)
+    # minimum withdraw date is a date field , default is 7 days from the date of withdraw
+    minimum_withdraw_date = models.DateField(
+        default=datetime.today() + timedelta(days=7)
+    )
+
+    # when saving this model then all the users can withdraw set true/false depending on the status, minimum withdraw amount and minimum withdraw date
+    def save(self, *args, **kwargs):
+        if self.status == "On":
+            users = NewUser.objects.all()
+            for user in users:
+                user.canWithdraw = True
+                user.save()
+        else:
+            users = NewUser.objects.all()
+            for user in users:
+                user.canWithdraw = False
+                user.save()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.status
+
+    class Meta:
+        verbose_name_plural = "Withdraw Setting"
