@@ -11,6 +11,7 @@ from landing.models import (
     ScratchCard,
     Spin,
     VisitWebsites,
+    WithdrawSetting,
     WithdrowRequest,
 )
 from rest_framework import serializers
@@ -252,4 +253,11 @@ class NotificationSerializer(serializers.ModelSerializer):
 class WithdrowReqeustSerializer(serializers.ModelSerializer):
     class Meta:
         model = WithdrowRequest
+        fields = "__all__"
+
+
+# serializer for the withdraw settings
+class WithdrawSettingsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WithdrawSetting
         fields = "__all__"
