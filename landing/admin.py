@@ -12,6 +12,7 @@ from .models import (
     ScratchCard,
     Spin,
     VisitWebsites,
+    WithdrawSetting,
     WithdrowRequest,
 )
 
@@ -32,6 +33,11 @@ class ImageModelAdmin(admin.ModelAdmin):
 
 class UserAdminConfig(UserAdmin):
     model = NewUser
+    readonly_fields = (
+        "reffer_code",
+        "refferal",
+    )
+    # list_display = ("reffer_code",)
     search_fields = (
         "username",
         "email",
@@ -88,15 +94,17 @@ class UserAdminConfig(UserAdmin):
                     "refferal",
                     "balance",
                     "mining_speed",
-                    # "reffer_code",
+                    "reffer_code",
                     "canWithdraw",
                     "withdraw_start_date",
                     "minimum_withdraw_amount",
                 )
             },
         ),
+        # read only fields
         # ("Referral", {"fields": ("reffer_code",)}),
     )
+
     add_fieldsets = (
         (
             None,
@@ -233,6 +241,17 @@ class RefferedModelAdmin(admin.ModelAdmin):
         return ", ".join([user.username for user in obj.reffered_user.all()])
 
     display_reffered_users.short_description = "Referred Users"
+
+
+@admin.register(WithdrawSetting)
+class WithdrawSettingAdmin(admin.ModelAdmin):
+    list_display = (
+        "status",
+        "minimum_withdraw_amount",
+        "minimum_withdraw_date",
+    )
+    list_per_page = 10
+    # search_fields = ("withdraw_start_date", "minimum_withdraw_amount")
 
 
 admin.site.register(NewUser, UserAdminConfig)
