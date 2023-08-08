@@ -14,6 +14,7 @@ from api.serializations import (
     SpinSerializer,
     UpdateUserSerializer,
     VisitWebsitesSerializer,
+    WithdrawSettingsSerializer,
     WithdrowReqeustSerializer,
 )
 from django.contrib.auth import update_session_auth_hash
@@ -29,6 +30,7 @@ from landing.models import (
     ScratchCard,
     Spin,
     VisitWebsites,
+    WithdrawSetting,
     WithdrowRequest,
 )
 from rest_framework.authtoken.models import Token
@@ -419,3 +421,15 @@ class WithdrowHistoryApiView(ListAPIView):
 
     def get(self, request, *args, **kwargs):
         return Response(self.get_queryset().values())
+
+
+class WithdrowSettingsApiView(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = WithdrawSettingsSerializer
+    model = WithdrawSetting
+
+    def get_queryset(self):
+        return WithdrawSetting.objects.all()
+
+    # def get(self, request, *args, **kwargs):
+    #     return Response(self.get_queryset().values())
