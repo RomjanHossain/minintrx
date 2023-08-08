@@ -21,6 +21,7 @@ from .views import (
     ViewWebsitesAPIView,
     WithdrawRequestApiView,
     WithdrowHistoryApiView,
+    WithdrowSettingsApiView,
     changeBalance,
     checkReffer,
     image_detail,
@@ -80,5 +81,11 @@ urlpatterns = [
     # WithdrowHistoryApiView
     path(
         "withdraw-history/", WithdrowHistoryApiView.as_view(), name="withdraw-history"
+    ),
+    # WithdrowSettingsApiView
+    path(
+        "withdraw-settings/",
+        WithdrowSettingsApiView.as_view(),
+        name="withdraw-settings",
     ),
 ]
